@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KehrWerk – Sauberkeit in Bewegung</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue:   #1e4f8c;
+      --green:  #6aab2e;
+      --ink:    #0e0e0e;
+      --slate:  #3a3a3a;
+      --stone:  #8a8a8a;
+      --fog:    #f2f1ef;
+      --white:  #fafaf9;
+      --line:   rgba(14,14,14,.10);
+      --fd: 'Cormorant Garamond', Georgia, serif;
+      --fb: 'DM Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--fb); background: var(--white); color: var(--ink); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5vw;
+      background: rgba(250,250,249,.93); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo img { height: 38px; width: auto; display: block; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: .78rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--slate); text-decoration: none; transition: color .2s; }
+    .nav-links a:hover { color: var(--blue); }
+
+    /* HERO */
+    .hero {
+      min-height: 100svh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 8rem 6vw 5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-eyebrow { font-size: .72rem; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--stone); margin-bottom: 1.4rem; animation: fadeUp .7s .1s both; }
+    .hero-headline { font-family: var(--fd); font-size: clamp(3rem, 6vw, 6rem); font-weight: 300; line-height: 1.08; color: var(--ink); margin-bottom: 1.6rem; animation: fadeUp .7s .25s both; }
+    .hero-headline em { font-style: italic; color: var(--blue); }
+    .hero-body { font-size: 1rem; color: var(--slate); max-width: 50ch; margin: 0 auto 2.5rem; line-height: 1.8; animation: fadeUp .7s .4s both; }
+    .hero-cta { display: inline-block; padding: .8rem 2.2rem; background: var(--blue); color: #fff; font-size: .78rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; transition: opacity .2s; animation: fadeUp .7s .55s both; }
+    .hero-cta:hover { opacity: .8; }
+
+    /* SECTION WRAPPER */
+    .leistung {
+      padding: 5rem 6vw;
+      border-bottom: 1px solid var(--line);
+      max-width: 960px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .leistung-header { display: flex; align-items: baseline; gap: 1.2rem; margin-bottom: 1.4rem; }
+    .leistung-num { font-size: .7rem; letter-spacing: .2em; color: var(--stone); }
+    .leistung-title { font-family: var(--fd); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; color: var(--ink); }
+    .leistung-text { font-size: .95rem; color: var(--slate); line-height: 1.85; max-width: 65ch; margin-bottom: 2.5rem; }
+    .leistung-text p + p { margin-top: .9rem; }
+
+    /* GALLERY */
+    .gallery {
+      position: relative;
+      width: 100%;
+      background: var(--fog);
+      aspect-ratio: 16 / 7;
+      overflow: hidden;
+    }
+    .gallery-slides { display: flex; width: 100%; height: 100%; }
+    .gallery-slide {
+      flex: 0 0 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform .4s ease;
+    }
+    .gallery-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-slide .placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
+      width: 100%; height: 100%;
+      color: var(--stone); font-size: .75rem; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .gallery-slide .placeholder svg { opacity: .35; }
+    .gallery-slide .placeholder span { opacity: .5; }
+
+    .gallery-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 36px; height: 36px;
+      background: rgba(250,250,249,.85); border: 1px solid var(--line);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--slate); transition: background .15s, color .15s;
+      backdrop-filter: blur(4px);
+    }
+    .gallery-btn:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .gallery-btn.prev { left: .8rem; }
+    .gallery-btn.next { right: .8rem; }
+    .gallery-counter {
+      position: absolute; bottom: .8rem; right: 1rem;
+      font-size: .68rem; letter-spacing: .14em; color: var(--stone);
+      background: rgba(250,250,249,.75); padding: .2rem .6rem;
+      backdrop-filter: blur(4px);
+    }
+
+    /* FOOTER */
+    footer { display: flex; align-items: center; justify-content: space-between; padding: 2rem 5vw; border-top: 1px solid var(--line); }
+    .footer-logo img { height: 32px; }
+    .footer-copy { font-size: .75rem; color: var(--stone); letter-spacing: .06em; }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .gallery { aspect-ratio: 4 / 3; }
+      footer { flex-direction: column; gap: .8rem; text-align: center; }
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo"><img src="logo.png" alt="KehrWerk"></a>
+  <ul class="nav-links">
+    <li><a href="#planung">Planung</a></li>
+    <li><a href="#produktion">Produktion</a></li>
+    <li><a href="#wartung">Wartung</a></li>
+    <li><a href="#sonstiges">Sonstiges</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">KehrWerk &middot; Sauberkeit in Bewegung</p>
+  <h1 class="hero-headline">Sauberkeit,<br>die <em>bewegt.</em></h1>
+  <p class="hero-body">KehrWerk steht für professionelle Reinigung im Einsatz – zuverlässig, gründlich und immer in Bewegung. Von der Planung bis zur Wartung bieten wir alles aus einer Hand.</p>
+  <a href="#planung" class="hero-cta">Leistungen entdecken</a>
+</section>
+
+<!-- PLANUNG -->
+<section class="leistung" id="planung">
+  <div class="leistung-header">
+    <span class="leistung-num">01</span>
+    <h2 class="leistung-title">Planung</h2>
+  </div>
+  <div class="leistung-text">
+    <p>Hier steht Ihr Text zur Planungsleistung. Beschreiben Sie den Prozess, die Methodik oder den Mehrwert, den Sie Ihren Kunden in dieser Phase bieten.</p>
+    <p>Ein zweiter Absatz kann ergänzende Details oder konkrete Vorteile hervorheben.</p>
+  </div>
+  <div class="gallery" data-index="0">
+    <!-- Bilder: <div class="gallery-slide"><img src="bild.jpg" alt=""></div> -->
+    <div class="gallery-slides">
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
+    </div>
+    <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="gallery-counter"></span>
+  </div>
+</section>
+
+<!-- PRODUKTION -->
+<section class="leistung" id="produktion">
+  <div class="leistung-header">
+    <span class="leistung-num">02</span>
+    <h2 class="leistung-title">Produktion</h2>
+  </div>
+  <div class="leistung-text">
+    <p>Beschreiben Sie Ihre Produktionsleistungen. Was wird hergestellt? Mit welcher Sorgfalt, Technik oder Erfahrung gehen Sie ans Werk?</p>
+    <p>Betonen Sie Qualitätsmerkmale, Kapazitäten oder besondere Kompetenzen, die Ihr Unternehmen auszeichnen.</p>
+  </div>
+  <div class="gallery" data-index="0">
+    <div class="gallery-slides">
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
+    </div>
+    <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="gallery-counter"></span>
+  </div>
+</section>
+
+<!-- WARTUNG -->
+<section class="leistung" id="wartung">
+  <div class="leistung-header">
+    <span class="leistung-num">03</span>
+    <h2 class="leistung-title">Wartung</h2>
+  </div>
+  <div class="leistung-text">
+    <p>Erläutern Sie Ihr Wartungsangebot. Regelmäßige Inspektion, schnelle Reaktionszeiten oder langfristige Betreuung – was bieten Sie an?</p>
+    <p>Verlässlichkeit und Kundennähe sind oft entscheidende Argumente – sprechen Sie sie hier direkt an.</p>
+  </div>
+  <div class="gallery" data-index="0">
+    <div class="gallery-slides">
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
+    </div>
+    <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="gallery-counter"></span>
+  </div>
+</section>
+
+<!-- SONSTIGES -->
+<section class="leistung" id="sonstiges">
+  <div class="leistung-header">
+    <span class="leistung-num">04</span>
+    <h2 class="leistung-title">Sonstiges</h2>
+  </div>
+  <div class="leistung-text">
+    <p>Raum für weitere Leistungen, Besonderheiten oder Angebote, die noch keinen eigenen Bereich haben.</p>
+    <p>Nutzen Sie diesen Abschnitt flexibel für das, was Ihnen wichtig ist.</p>
+  </div>
+  <div class="gallery" data-index="0">
+    <div class="gallery-slides">
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
+    </div>
+    <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
+    <span class="gallery-counter"></span>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="footer-logo"><img src="logo.png" alt="KehrWerk"></a>
+  <span class="footer-copy">&copy; 2025 KehrWerk &middot; Alle Rechte vorbehalten</span>
+</footer>
+
+<script>
+  function render(gallery) {
+    const slides = gallery.querySelectorAll('.gallery-slide');
+    const idx = parseInt(gallery.dataset.index);
+    slides.forEach((s, i) => s.style.transform = `translateX(${(i - idx) * 100}%)`);
+    gallery.querySelector('.gallery-counter').textContent = (idx + 1) + ' / ' + slides.length;
+  }
+  function step(btn, dir) {
+    const gallery = btn.closest('.gallery');
+    const total = gallery.querySelectorAll('.gallery-slide').length;
+    let idx = (parseInt(gallery.dataset.index) + dir + total) % total;
+    gallery.dataset.index = idx;
+    render(gallery);
+  }
+  document.querySelectorAll('.gallery').forEach(render);
+</script>
+</body>
+</html>
