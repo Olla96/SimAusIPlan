@@ -71,12 +71,13 @@
       aspect-ratio: 16 / 7;
       overflow: hidden;
     }
-    .gallery-slides { display: flex; width: 100%; height: 100%; }
+    .gallery-slides { position: relative; width: 100%; height: 100%; }
     .gallery-slide {
-      flex: 0 0 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform .4s ease;
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: none; align-items: center; justify-content: center;
     }
+    .gallery-slide.active { display: flex; }
     .gallery-slide img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; margin: auto; }
     .gallery-slide .placeholder {
       display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .6rem;
@@ -134,7 +135,7 @@
 <section class="hero">
   <p class="hero-eyebrow">KehrWerk &middot; Sauberkeit in Bewegung</p>
   <h1 class="hero-headline">Sauberkeit,<br>die <em>bewegt.</em></h1>
-  <p class="hero-body">KehrWerk steht für professionelle Reinigung im Einsatz – zuverlässig, gründlich und immer in Bewegung. Von der Planung bis zur Wartung bieten wir alles aus einer Hand.</p>
+  <p class="hero-body">KehrWerk steht für professionelle Reinigung im Einsatz – zuverlässig, gründlich und immer in Bewegung. Von der Planung bis zur Wartung bieten wir alles aus einer Hand. Mit aktuellen Methoden der Simulation unterstützen wir Sie und Unsere Mitarbeitenden.</p>
   <a href="#planung" class="hero-cta">Leistungen entdecken</a>
 </section>
 
@@ -151,9 +152,9 @@
   <div class="gallery" data-index="0">
     <!-- Bilder: <div class="gallery-slide"><img src="bild.jpg" alt=""></div> -->
     <div class="gallery-slides">
-      <div class="gallery-slide"><img src="Exoskelett1.jpg" alt=""></div>
-      <div class="gallery-slide"><img src="Exoskelett2.jpg" alt=""></div>
-      <div class="gallery-slide"><img src="Exoskelett3.jpg" alt=""></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
+      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
     </div>
     <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
     <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
@@ -168,14 +169,17 @@
     <h2 class="leistung-title">Produktion</h2>
   </div>
   <div class="leistung-text">
-    <p>Beschreiben Sie Ihre Produktionsleistungen. Was wird hergestellt? Mit welcher Sorgfalt, Technik oder Erfahrung gehen Sie ans Werk?</p>
-    <p>Betonen Sie Qualitätsmerkmale, Kapazitäten oder besondere Kompetenzen, die Ihr Unternehmen auszeichnen.</p>
+    <p>In der Produktion nutzen wir Exoskelette in der Montage und in den Werkstätten. Sie bieten unseren Mitarbeitenden Unterstützung bei Kopfüberarbeiten und Hebearbeiten.</p>
+    <p>AR-Brillen werden in der Endmontage zur Visualisierung von Montageplänen und zur Qualitätssicherung genutzt.</p>
+    <p>Mit dem Einsatz von Cobots werden einfache Automatisierungsaufgaben realisiert. Standardkomponenten können so effizienter in Schweißerei und Lackiererei produziert werden</p>
   </div>
   <div class="gallery" data-index="0">
     <div class="gallery-slides">
-      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 1</span></div></div>
-      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 2</span></div></div>
-      <div class="gallery-slide"><div class="placeholder"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Bild 3</span></div></div>
+      <div class="gallery-slide"><img src="Exoskelett1.jpg" alt="Bild 1"></div>
+      <div class="gallery-slide"><img src="Exoskelett2.jpg" alt="Bild 2"></div>
+      <div class="gallery-slide"><img src="Cobot1.jpg" alt="Bild 3"></div>
+      <div class="gallery-slide"><img src="Cobot2.jpg" alt="Bild 3"></div>
+      <div class="gallery-slide"><img src="AR1.png" alt="Bild 3"></div>
     </div>
     <button class="gallery-btn prev" onclick="step(this,-1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
     <button class="gallery-btn next" onclick="step(this,1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></button>
@@ -236,7 +240,7 @@
   function render(gallery) {
     const slides = gallery.querySelectorAll('.gallery-slide');
     const idx = parseInt(gallery.dataset.index);
-    slides.forEach((s, i) => s.style.transform = `translateX(${(i - idx) * 100}%)`);
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
     gallery.querySelector('.gallery-counter').textContent = (idx + 1) + ' / ' + slides.length;
   }
   function step(btn, dir) {
